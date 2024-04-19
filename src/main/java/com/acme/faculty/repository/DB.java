@@ -3,7 +3,6 @@ package com.acme.faculty.repository;
 import com.acme.faculty.entity.Course;
 import com.acme.faculty.entity.Dean;
 import com.acme.faculty.entity.Faculty;
-
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -12,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * Emulation der Datenbasis für persistente Fakultäten.
  */
-public class DB {
+final class DB {
 
     static final List<Faculty> FACULTIES = getFaculties();
 

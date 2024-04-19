@@ -1,20 +1,17 @@
 package com.acme.faculty.repository;
 
+import com.acme.faculty.entity.Faculty;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.acme.faculty.entity.Faculty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
 import static com.acme.faculty.repository.DB.FACULTIES;
-
 /**
  * Repository für den DB-Zugriff bei Kunden.
  *
- * @author Ahmad Hawarnah</a>
+ * @author Ahmad Hawarnah
  */
 @Repository
 @Slf4j

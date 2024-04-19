@@ -1,17 +1,18 @@
 package com.acme.faculty.service;
 
-import java.util.List;
-import java.util.UUID;
 import com.acme.faculty.entity.Faculty;
 import com.acme.faculty.repository.FacultyRepository;
+import java.util.List;
+import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * Anwendungslogik für Faculty
- * @author Ahmad Hawarnah</a>
+ * Anwendungslogik für Faculty.
+ *
+ * @author Ahmad Hawarnah
  **/
 @Service
 @RequiredArgsConstructor

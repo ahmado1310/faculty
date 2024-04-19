@@ -9,7 +9,6 @@ import lombok.ToString;
 
 /**
  * Repräsentiert einen Dekan an einer Bildungseinrichtung.
- *
  * Diese Klasse enthält den Namen und die E-Mail-Adresse des Dekans.
  *
  * @author Ahmad Hawarnah

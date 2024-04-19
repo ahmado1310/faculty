@@ -9,6 +9,7 @@ import lombok.ToString;
 /**
  * Repräsentiert einen Kurs, der von einer Bildungseinrichtung angeboten wird.
  * Diese Klasse enthält den Namen des Kurses.
+ *
  * @author Ahmad Hawarnah
  */
 @Getter

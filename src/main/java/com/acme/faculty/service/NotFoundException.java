@@ -1,7 +1,7 @@
 package com.acme.faculty.service;
 
-import lombok.Getter;
 import java.util.UUID;
+import lombok.Getter;
 
 /**
  * RuntimeException, falls keine Fakultät gefunden wurde.
