@@ -29,5 +29,4 @@ public class Dean {
      */
     @Email
     private String email;
-
 }

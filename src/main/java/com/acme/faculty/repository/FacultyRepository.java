@@ -36,5 +36,4 @@ public class FacultyRepository {
     public List<Faculty> findAll() {
         return FACULTIES;
     }
-
 }

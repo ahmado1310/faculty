@@ -284,18 +284,18 @@ dependencies {
     implementation(platform("org.slf4j:slf4j-bom:${libs.versions.slf4j.get()}"))
     implementation(platform("org.apache.logging.log4j:log4j-bom:${libs.versions.log4j2.get()}"))
     //implementation(platform("io.prometheus:prometheus-metrics-bom:${libs.versions.prometheusMetrics.get()}"))
-    implementation(platform("io.micrometer:micrometer-bom:${libs.versions.micrometer.get()}"))
-    implementation(platform("io.micrometer:micrometer-tracing-bom:${libs.versions.micrometerTracing.get()}"))
-    implementation(platform("io.zipkin.reporter2:zipkin-reporter-bom:${libs.versions.zipkinReporter.get()}"))
-    implementation(platform("io.zipkin.brave:brave-bom:${libs.versions.brave.get()}"))
+    //implementation(platform("io.micrometer:micrometer-bom:${libs.versions.micrometer.get()}"))
+    //implementation(platform("io.micrometer:micrometer-tracing-bom:${libs.versions.micrometerTracing.get()}"))
+    //implementation(platform("io.zipkin.reporter2:zipkin-reporter-bom:${libs.versions.zipkinReporter.get()}"))
+    //implementation(platform("io.zipkin.brave:brave-bom:${libs.versions.brave.get()}"))
     //implementation(platform("com.fasterxml.jackson:jackson-bom:${libs.versions.jackson.get()}"))
-    implementation(platform("io.netty:netty-bom:${libs.versions.netty.get()}"))
-    implementation(platform("io.projectreactor:reactor-bom:${libs.versions.reactorBom.get()}"))
+    //implementation(platform("io.netty:netty-bom:${libs.versions.netty.get()}"))
+    //implementation(platform("io.projectreactor:reactor-bom:${libs.versions.reactorBom.get()}"))
     implementation(platform("org.springframework:spring-framework-bom:${libs.versions.springFramework.get()}"))
     implementation(platform("com.oracle.database.jdbc:ojdbc-bom:${libs.versions.oracleDatabase.get()}"))
-    implementation(platform("org.springframework.data:spring-data-bom:${libs.versions.springData.get()}"))
+    //implementation(platform("org.springframework.data:spring-data-bom:${libs.versions.springData.get()}"))
     //implementation(platform("org.springframework.security:spring-security-bom:${libs.versions.springSecurity.get()}"))
-    implementation(platform("ch.qos.logback:logback-parent:${libs.versions.logback.get()}"))
+    //implementation(platform("ch.qos.logback:logback-parent:${libs.versions.logback.get()}"))
 
     //testImplementation(platform("org.assertj:assertj-bom:${libs.versions.assertj.get()}"))
     //testImplementation(platform("org.mockito:mockito-bom:${libs.versions.mockito.get()}"))
@@ -309,7 +309,8 @@ dependencies {
     // https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#tooling-modelgen
     // https://docs.jboss.org/hibernate/orm/current/introduction/html_single/Hibernate_Introduction.html#generator
     // build\generated\sources\annotationProcessor\java\main\com.acme.kunde\entity\Kunde_.java
-    annotationProcessor("org.hibernate:hibernate-jpamodelgen:${libs.versions.hibernateJpamodelgen.get()}")
+    annotationProcessor("org.hibernate.orm:hibernate-processor:${libs.versions.hibernateProcessor.get()}")
+    //annotationProcessor("org.hibernate:hibernate-jpamodelgen:${libs.versions.hibernateJpamodelgen.get()}")
     annotationProcessor("org.projectlombok:lombok:${libs.versions.lombok.get()}")
     annotationProcessor("org.mapstruct:mapstruct-processor:${libs.versions.mapstruct.get()}")
     annotationProcessor("org.projectlombok:lombok-mapstruct-binding:${libs.versions.lombokMapstructBinding.get()}")
@@ -323,7 +324,7 @@ dependencies {
     // HttpGraphQlClient benoetigt WebClient mit Project Reactor
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-json")
-    //!!!implementation("org.springframework.boot:spring-boot-starter-graphql")
+    implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -416,24 +417,24 @@ dependencies {
     errorprone("com.google.errorprone:error_prone_core:${libs.versions.errorprone.get()}")
 
     constraints {
-        compileOnly("org.projectlombok:lombok:${libs.versions.lombok.get()}")
+        //compileOnly("org.projectlombok:lombok:${libs.versions.lombok.get()}")
 
         implementation("org.jetbrains:annotations:${libs.versions.annotations.get()}")
-        implementation("org.apache.tomcat.embed:tomcat-embed-core:${libs.versions.tomcat.get()}")
-        implementation("org.apache.tomcat.embed:tomcat-embed-el:${libs.versions.tomcat.get()}")
+        //implementation("org.apache.tomcat.embed:tomcat-embed-core:${libs.versions.tomcat.get()}")
+        //implementation("org.apache.tomcat.embed:tomcat-embed-el:${libs.versions.tomcat.get()}")
         implementation("com.graphql-java:java-dataloader:${libs.versions.graphqlJavaDataloader.get()}")
         implementation("com.graphql-java:graphql-java:${libs.versions.graphqlJava.get()}")
         implementation("jakarta.validation:jakarta.validation-api:${libs.versions.jakartaValidation.get()}")
         //implementation("org.hibernate.validator:hibernate-validator:${libs.versions.hibernateValidator.get()}")
 
-        implementation("org.springframework.hateoas:spring-hateoas:${libs.versions.springHateoas.get()}")
+        //implementation("org.springframework.hateoas:spring-hateoas:${libs.versions.springHateoas.get()}")
         //implementation("org.springframework.graphql:spring-graphql:${libs.versions.springGraphQL.get()}")
         //implementation("org.springframework.security:spring-security-rsa:${libs.versions.springSecurityRsa.get()}")
 
         //runtimeOnly("org.postgresql:postgresql:${libs.versions.postgresql.get()}")
         //runtimeOnly("com.mysql:mysql-connector-j:${libs.versions.mysql.get()}")
         //runtimeOnly("com.h2database:h2:${libs.versions.h2.get()}")
-        //implementation("jakarta.persistence:jakarta.persistence-api:${libs.versions.jakartaPersistence.get()}")
+        implementation("jakarta.persistence:jakarta.persistence-api:${libs.versions.jakartaPersistence.get()}")
         //implementation("com.zaxxer:HikariCP:${libs.versions.hikaricp.get()}") // NOSONAR
         implementation("org.hibernate.orm:hibernate-core:${libs.versions.hibernate.get()}")
 
