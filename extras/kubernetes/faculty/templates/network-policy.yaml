@@ -1,4 +1,4 @@
-# Copyright (C) 2023 - present Juergen Zimmermann, Hochschule Karlsruhe
+# Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,6 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-services:
-  kunde:
-    image: juergenzimmermann/kunde:2024.04.0-eclipse-ubi
+# https://kubernetes.io/docs/concepts/services-networking/network-policies
+# https://hub.armosec.io/docs/c-0054
+# https://hub.armosec.io/docs/c-0049
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "faculty.fullname" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  # Spezifikation, auf welche Pods die NetworkPolicy angewendet wird
+  podSelector:
+    matchLabels:
+      {{- include "faculty.selectorLabels" . | nindent 6 }}
+  policyTypes: [Ingress, Egress]

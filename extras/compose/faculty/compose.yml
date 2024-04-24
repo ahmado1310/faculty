@@ -32,7 +32,7 @@
 # https://docs.docker.com/compose/compose-file/05-services
 services:
   kunde:
-    image: juergenzimmermann/kunde:2024.04.0-buildpacks
+    image: ahmadhawarnah/faculty:2024.04.0-buildpacks
     ports:
       #- published: 8080-8085
       - published: 8080
@@ -51,11 +51,11 @@ services:
         target: /workspace/BOOT-INF/classes/certificate.crt
         read_only: true
       - type: bind
-        source: C:\Zimmermann\volumes\kunde-v0
+        source: C:\Zimmermann\volumes\faculty-v0
         target: /tmp
     env_file: .env
     # CAVEAT: bei Replikation keine doppelten Rechnernamen im virtuellen Netzwerk !!!
-    hostname: kunde
+    hostname: faculty
     # https://docs.docker.com/compose/compose-file/compose-file-v3/#cap_add-cap_drop
     cap_drop: [ ALL ]
     stop_grace_period: 10s

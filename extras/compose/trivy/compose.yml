@@ -13,6 +13,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# Aufruf:   docker compose [-f compose.yml -f compose.eclipse.yml|compose.azul.yml|compose.buildpacks-eclipse.yml|compose.buildpacks-azul.yml] up
+
 services:
-  kunde:
-    image: juergenzimmermann/kunde:2024.04.0-eclipse
+  trivy:
+    image: aquasec/trivy:0.50.1
+    command: [image, ahmadhawarnah/faculty:2024.04.0-buildpacks]
+    volumes:
+      - type: bind
+        source: C:/Zimmermann/volumes/trivy
+        target: /root/.cache
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    container_name: trivy
+    cap_drop: [ ALL ]
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 4096M
+        reservations:
+          cpus: "2.0"
+          memory: 4096M

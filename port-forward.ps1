@@ -1,4 +1,4 @@
-# Copyright (C) 2022 -  Juergen Zimmermann, Hochschule Karlsruhe
+# Copyright (C) 2017 -  Juergen Zimmermann, Hochschule Karlsruhe
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,13 +15,13 @@
 
 # https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7
 
-# Aufruf:   .\dive.ps1 [eclipse|azul|buildpacks-eclipse|buildpacks-azul]
+# Aufruf:   .\port-forward.ps1
 # ggf. vorher:  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 # oder:         Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 
 # "Param" muss in der 1. Zeile sein
 Param (
-  [string]$base = 'buildpacks'
+    [string]$service = 'kunde'
 )
 
 Set-StrictMode -Version Latest
@@ -29,21 +29,11 @@ Set-StrictMode -Version Latest
 $versionMinimum = [Version]'7.5.0'
 $versionCurrent = $PSVersionTable.PSVersion
 if ($versionMinimum -gt $versionCurrent) {
-  throw "PowerShell $versionMinimum statt $versionCurrent erforderlich"
+    throw "PowerShell $versionMinimum statt $versionCurrent erforderlich"
 }
 
 # Titel setzen
-$host.ui.RawUI.WindowTitle = 'dive'
+$host.ui.RawUI.WindowTitle = "$service port forward"
 
-$diveVersion = 'v0.12.0'
-$imagePrefix = 'juergenzimmermann/'
-$imageBase = 'kunde'
-$imageTag = "2024.04.0-$base"
-$image = "$imagePrefix${imageBase}:$imageTag"
-
-# https://github.com/wagoodman/dive#installation
-docker run --rm --interactive --tty `
-  --mount type='bind,source=/var/run/docker.sock,destination=/var/run/docker.sock' `
-  --hostname dive --name dive `
-  --read-only --cap-drop ALL `
-  wagoodman/dive:$diveVersion $image
+$namespace = 'acme'
+kubectl port-forward service/$service 8080 --namespace $namespace

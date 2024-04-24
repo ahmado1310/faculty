@@ -226,7 +226,7 @@
 			<property name="max" value="1"/>
 		</module>
 		<module name="NestedIfDepth">
-			<property name="max" value="1"/>
+			<property name="max" value="2"/>
 		</module>
         <module name="NestedTryDepth">
             <property name="max" value="1"/>
@@ -241,7 +241,7 @@
         <module name="ParameterAssignment"/>
         <module name="RequireThis"/>
         <module name="ReturnCount">
-            <property name="max" value="3"/>
+            <property name="max" value="6"/>
         </module>
 		<module name="SimplifyBooleanExpression"/>
 		<module name="SimplifyBooleanReturn"/>

@@ -97,7 +97,7 @@ val javaLanguageVersion = project.properties["javaLanguageVersion"] as String? ?
 val javaVersion = project.properties["javaVersion"] ?: libs.versions.javaVersion.get()
 
 // alternativ:   project.findProperty("...")
-val imagePath = project.properties["imagePath"] ?: "juergenzimmermann"
+val imagePath = project.properties["imagePath"] ?: "ahmadhawarnah"
 val enablePreview = if (project.properties["enablePreview"] == "false" || project.properties["enablePreview"] == "FALSE") null else "--enable-preview"
 val tracePinnedThreads = project.properties["tracePinnedThreads"] == "true" || project.properties["tracePinnedThreads"] == "TRUE"
 val alternativeBuildpack = project.properties["buildpack"]

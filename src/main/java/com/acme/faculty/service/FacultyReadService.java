@@ -2,7 +2,9 @@ package com.acme.faculty.service;
 
 import com.acme.faculty.entity.Faculty;
 import com.acme.faculty.repository.FacultyRepository;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +44,39 @@ public class FacultyReadService {
     public @NonNull List<Faculty> findAll() {
         log.debug("findAll");
         return repository.findAll();
+    }
+
+    /**
+     * Fakultät anhand von searchCriteria als Collection suchen.
+     *
+     * @param searchCriteria Die searchCriteria
+     * @return Die gefundene Fakultät oder eine leere Collection
+     * @throws NotFoundException Falls keine Kunden gefunden wurden
+     */
+    public @NonNull Collection<Faculty> find(@NonNull final Map<String, List<String>> searchCriteria) {
+        log.debug("find: searchCriteria={}", searchCriteria);
+
+        if (searchCriteria.isEmpty()) {
+            return repository.findAll();
+        }
+
+        if (searchCriteria.size() == 1) {
+            final var name = searchCriteria.get("name");
+            if (name != null && name.size() == 1) {
+                final var faculty = repository.findByName(name.getFirst());
+                if (faculty.isEmpty()) {
+                    throw new NotFoundException(searchCriteria);
+                }
+                log.debug("find (name): {}", faculty);
+                return faculty;
+            }
+        }
+
+        final var faculty = repository.find(searchCriteria);
+        if (faculty.isEmpty()) {
+            throw new NotFoundException(searchCriteria);
+        }
+        log.debug("find: {}", faculty);
+        return faculty;
     }
 }
