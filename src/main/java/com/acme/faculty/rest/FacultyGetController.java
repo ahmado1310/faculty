@@ -31,6 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @OpenAPIDefinition(info = @Info(title = "Faculty API", version = "v0"))
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("java:S1075")
 public class FacultyGetController {
     /**
      * Basispfad für die REST-Schnittstelle.

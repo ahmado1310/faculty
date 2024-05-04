@@ -18,8 +18,7 @@
 
 # table = Schluessel/Wert-Paare
 [versions]
-#javaVersion = "22"
-javaVersion = "21.0.2"
+javaVersion = "22.0.1"
 
 springBoot = "3.3.0-RC1"
 springBootPlugin = "3.3.0-RC1"
@@ -40,9 +39,9 @@ allureBom = "2.27.0"
 #assertj = "3.25.3"
 #brave = "6.0.3"
 crac = "1.4.0"
-flyway = "10.11.1"
-graphqlJava = "22.0-rc1"
-graphqlJavaDataloader = "3.3.0"
+flyway = "10.12.0"
+graphqlJava = "22.0"
+#graphqlJavaDataloader = "3.3.0"
 #h2 = "2.2.224"
 hibernate = "7.0.0.Alpha1"
 #hibernate = "6.5.0.CR2"
@@ -57,7 +56,7 @@ jakartaPersistence = "3.2.0-M2"
 #jakartaPersistence = "3.1.0"
 jakartaValidation = "3.1.0-M2"
 #jakartaValidation = "3.0.2"
-#junitJupiter = "5.10.2"
+junitJupiter = "5.11.0-M1"
 log4j2 = "3.0.0-beta2"
 #logback = "1.5.6"
 # fuer annotationProcessor
@@ -90,20 +89,20 @@ springFramework = "6.2.0-M1"
 # ----------------------------------------------------------------------------------------
 # T e s t e n
 # ----------------------------------------------------------------------------------------
-junitPlatformSuite = "1.10.2"
+junitPlatformSuite = "1.11.0-M1"
 
 # ----------------------------------------------------------------------------------------
 # C o d e a n a l y s e ,   R e p o r t s ,   D o k u m e n t a t i o n
 # ----------------------------------------------------------------------------------------
 allureJunit = "2.27.0"
-allureCommandline = "2.28.0"
+allureCommandline = "2.29.0"
 #asciidoctorj = "3.0.0-alpha.2"
 asciidoctorj = "2.5.12"
 asciidoctorjDiagram = "2.3.0"
 asciidoctorjPdf = "2.3.15"
 aspectjweaver = "1.9.9.1"
-checkstyle = "10.15.0"
-errorprone = "2.26.1"
+checkstyle = "10.16.0"
+errorprone = "2.27.0"
 jruby = "9.4.6.0"
 jacoco = "0.8.12"
 modernizer = "2.8.0"
@@ -129,5 +128,5 @@ snyk = "0.6.1"
 sonarqube = "5.0.0.4638"
 spotbugsPlugin = "6.0.12"
 spotless = "6.25.0"
-sweeney = "4.6.12"
+sweeney = "4.6.13"
 testLogger = "4.0.0"

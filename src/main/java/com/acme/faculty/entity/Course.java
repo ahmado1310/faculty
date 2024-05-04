@@ -1,7 +1,9 @@
 package com.acme.faculty.entity;
 
 import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,6 +19,12 @@ import lombok.ToString;
 @Builder
 @ToString
 public class Course {
+    /**
+     * Eindeutige Kennung des Kurses.
+     */
+    @EqualsAndHashCode.Include
+    private UUID id;
+
     /**
      * Der Name des Kurses.
      */

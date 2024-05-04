@@ -81,7 +81,7 @@
 //
 //  14) Initialisierung des Gradle Wrappers in der richtigen Version
 //      dazu ist ggf. eine Internetverbindung erforderlich
-//        gradle wrapper --gradle-version=8.7 --distribution-type=bin
+//        gradle wrapper --gradle-version=8.8-rc-1 --distribution-type=bin
 
 // https://github.com/gradle/kotlin-dsl/tree/master/samples
 // https://docs.gradle.org/current/userguide/kotlin_dsl.html
@@ -91,9 +91,7 @@
 import java.nio.file.Paths
 import net.ltgt.gradle.errorprone.errorprone
 
-// TODO https://github.com/gradle/gradle/issues/26162 https://github.com/gradle/gradle/pull/28552
-//val javaLanguageVersion = project.properties["javaLanguageVersion"] ?: JavaVersion.VERSION_22.majorVersion
-val javaLanguageVersion = project.properties["javaLanguageVersion"] as String? ?: JavaVersion.VERSION_21.majorVersion
+val javaLanguageVersion = project.properties["javaLanguageVersion"] as String? ?: JavaVersion.VERSION_22.majorVersion
 val javaVersion = project.properties["javaVersion"] ?: libs.versions.javaVersion.get()
 
 // alternativ:   project.findProperty("...")
@@ -201,7 +199,7 @@ version = "2024.04.0"
 val imageTag = project.properties["imageTag"] ?: project.version.toString()
 
 sweeney {
-    enforce(mapOf("type" to "gradle", "expect" to "[8.7,8.7]"))
+    enforce(mapOf("type" to "gradle", "expect" to "[8.8,8.8]"))
     // https://www.java.com/releases
     // https://devcenter.heroku.com/articles/java-support#specifying-a-java-version
     enforce(mapOf("type" to "jdk", "expect" to "[${javaVersion},${javaVersion}]"))
@@ -218,7 +216,6 @@ java {
         languageVersion = JavaLanguageVersion.of(javaLanguageVersion)
     }
     // sourceCompatibility = JavaVersion.VERSION_22
-    // sourceCompatibility = JavaVersion.VERSION_21
     // targetCompatibility = sourceCompatibility
 }
 
@@ -299,7 +296,7 @@ dependencies {
 
     //testImplementation(platform("org.assertj:assertj-bom:${libs.versions.assertj.get()}"))
     //testImplementation(platform("org.mockito:mockito-bom:${libs.versions.mockito.get()}"))
-    //testImplementation(platform("org.junit:junit-bom:${libs.versions.junitJupiter.get()}"))
+    testImplementation(platform("org.junit:junit-bom:${libs.versions.junitJupiter.get()}"))
     testImplementation(platform("io.qameta.allure:allure-bom:${libs.versions.allureBom.get()}"))
 
     implementation(platform("org.springframework.boot:spring-boot-starter-parent:${libs.versions.springBoot.get()}")) // NOSONAR
@@ -422,7 +419,7 @@ dependencies {
         implementation("org.jetbrains:annotations:${libs.versions.annotations.get()}")
         //implementation("org.apache.tomcat.embed:tomcat-embed-core:${libs.versions.tomcat.get()}")
         //implementation("org.apache.tomcat.embed:tomcat-embed-el:${libs.versions.tomcat.get()}")
-        implementation("com.graphql-java:java-dataloader:${libs.versions.graphqlJavaDataloader.get()}")
+        //implementation("com.graphql-java:java-dataloader:${libs.versions.graphqlJavaDataloader.get()}")
         implementation("com.graphql-java:graphql-java:${libs.versions.graphqlJava.get()}")
         implementation("jakarta.validation:jakarta.validation-api:${libs.versions.jakartaValidation.get()}")
         //implementation("org.hibernate.validator:hibernate-validator:${libs.versions.hibernateValidator.get()}")
@@ -570,7 +567,6 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
         // https://github.com/paketo-buildpacks/bellsoft-liberica/blob/main/buildpack.toml: Umgebungsvariable und Ubuntu Jammy
         // https://releases.ubuntu.com: Jammy = 22.04
         // https://github.com/paketo-buildpacks/bellsoft-liberica/releases
-        // TODO https://github.com/paketo-buildpacks/bellsoft-liberica/issues/565 https://github.com/spring-projects/spring-boot/issues/40087
         "BP_JVM_VERSION" to javaLanguageVersion, // default: 17
         // BPL = Build Packs Launch
         "BPL_JVM_THREAD_COUNT" to "20", // default: 250 (reactive: 50)
@@ -597,20 +593,20 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
     // https://paketo.io/docs/howto/java/#use-an-alternative-jvm
     when (alternativeBuildpack) {
         "azul-zulu" -> {
-            // Azul Zulu: JRE 8, 11, 17 (default, siehe buildpack.toml), 21
+            // Azul Zulu: JRE 8, 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21, 22
             // https://github.com/paketo-buildpacks/azul-zulu/releases
             buildpacks = listOf(
                 "gcr.io/paketo-buildpacks/azul-zulu",
                 //"paketobuildpacks/azul-zulu",
                 "paketo-buildpacks/java",
             )
-            imageName = "${imageName.get()}-azul"
+            imageName = "${imageName.get()}" //!!ich habe hier die -azul gelösct
             println("")
             println("Buildpacks: JVM durch Azul Zulu")
             println("")
         }
         "adoptium" -> {
-            // Eclipse Temurin: JRE 8, 11, 17 (default, siehe buildpack.toml), 21
+            // Eclipse Temurin: JRE 8, 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21, 22
             // https://github.com/paketo-buildpacks/adoptium/releases
             buildpacks = listOf(
                 //"paketo-buildpacks/ca-certificates",
@@ -623,7 +619,7 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
             println("")
         }
         "sap-machine" -> {
-            // SapMachine: JRE 11, 17 (default, siehe buildpack.toml), 21
+            // SapMachine: JRE 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21, 22
             // https://github.com/paketo-buildpacks/sap-machine/releases
             buildpacks = listOf(
                 "gcr.io/paketo-buildpacks/sap-machine",
@@ -635,15 +631,16 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
             println("")
         }
         else -> {
-            // Bellsoft Liberica: JRE 8, 11, 17 (default, siehe buildpack.toml), 21
+            // Bellsoft Liberica: JRE 8, 11, 17 (default, siehe buildpack.toml: BP_JVM_VERSION), 21
             // https://github.com/paketo-buildpacks/bellsoft-liberica/releases
+            // TODO https://github.com/paketo-buildpacks/bellsoft-liberica/issues/565
             println("")
             println("Buildpacks: JVM durch Bellsoft Liberica (default)")
             println("")
 
-            // Amazon Coretto: kein JRE, nur Java 8
+            // Amazon Coretto: nur JDK, *kein* JRE
             // https://github.com/paketo-buildpacks/amazon-corretto/releases
-            // Oracle: nur JDK oder GraalVM
+            // Oracle: nur JDK oder GraalVM, *kein* JRE
             // https://github.com/paketo-buildpacks/oracle/releases
             // Microsoft OpenJDK: nur JDK, *kein* JRE
             // https://github.com/paketo-buildpacks/microsoft-openjdk/releases
@@ -657,6 +654,11 @@ tasks.named("bootBuildImage", org.springframework.boot.gradle.tasks.bundling.Boo
     //    host = "unix:///run/user/1000/podman/podman.sock"
     //    isBindHostToBuilder = true
     // }
+}
+
+// TODO https://github.com/spring-projects/spring-boot/issues/40074
+tasks.named("resolveMainClassName", org.springframework.boot.gradle.plugin.ResolveMainClassName::class.java) {
+    configuredMainClassName = "${project.group}.${project.name}.Application"
 }
 
 tasks.named("bootRun", org.springframework.boot.gradle.tasks.run.BootRun::class.java) {
@@ -673,7 +675,7 @@ tasks.named("bootRun", org.springframework.boot.gradle.tasks.run.BootRun::class.
     // $env:TEMP\hsperfdata_<USERNAME>\<PID> Java HotSpot Performance data log: bei jedem Start der JVM neu angelegt.
     // https://support.oracle.com/knowledge/Middleware/2325910_1.html
     // https://blog.mygraphql.com/zh/notes/java/diagnostic/hsperfdata/hsperfdata
-    systemProperty("server.tomcat.basedir", "target/tomcat")
+    systemProperty("server.tomcat.basedir", "build/tomcat")
 
     if (tracePinnedThreads) {
         systemProperty("tracePinnedThreads", "full")
@@ -718,7 +720,7 @@ tasks.named<Test>("test") {
     // $env:TEMP\hsperfdata_<USERNAME>\<PID> Java HotSpot Performance data log: bei jedem Start der JVM neu angelegt.
     // https://support.oracle.com/knowledge/Middleware/2325910_1.html
     // https://blog.mygraphql.com/zh/notes/java/diagnostic/hsperfdata/hsperfdata
-    systemProperty("server.tomcat.basedir", "target/tomcat")
+    systemProperty("server.tomcat.basedir", "build/tomcat")
 
     if (enablePreview != null) {
         jvmArgs(enablePreview)
@@ -820,6 +822,11 @@ tasks.named("spotbugsMain", com.github.spotbugs.snom.SpotBugsTask::class.java) {
     // val excludePath = File("config/spotbugs/exclude.xml")
     val excludePath = Paths.get("config", "spotbugs", "exclude.xml")
     excludeFilter = file(excludePath)
+}
+
+modernizer {
+    toolVersion = libs.versions.modernizer.get()
+    includeTestClasses = true
 }
 
 // https://docs.sonarqube.org/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/#analyzing

@@ -37,16 +37,6 @@ public class FacultyReadService {
     }
 
     /**
-     * Ruft alle Fakultäten ab.
-     *
-     * @return Eine Liste aller Fakultäten
-     */
-    public @NonNull List<Faculty> findAll() {
-        log.debug("findAll");
-        return repository.findAll();
-    }
-
-    /**
      * Fakultät anhand von searchCriteria als Collection suchen.
      *
      * @param searchCriteria Die searchCriteria
