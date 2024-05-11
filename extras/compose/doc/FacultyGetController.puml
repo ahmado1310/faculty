@@ -1,0 +1,76 @@
+@startuml FacultyGetController
+skinparam classAttributeIconSize 0
+
+package org.springframework {
+    package http {
+        class ResponseEntity<T>
+    }
+    package hateoas {
+        class CollectionModel<E>
+    }
+    package util {
+        class MultiValueMap<K,V>
+    }
+    package web.bind.annotation {
+        interface "@RestController" as RestController
+        interface "@RequestMapping" as RequestMapping
+        interface "@PathVariable" as PathVariable
+        interface "@RequestParam" as RequestParam
+        interface "@ExceptionHandler" as ExceptionHandler
+    }
+}
+
+package jakarta.servlet.http {
+    interface HttpServletRequest
+}
+
+package java.util {
+    class UUID
+    UUID .up[hidden].> HttpServletRequest
+}
+
+package com.acme.faculty {
+    package service {
+        class FacultyReadService << control >> << @Service >>
+        class NotFoundException
+    }
+
+    package rest #DDDDDD {
+        class FacultyModel <<entity>>
+
+        class FacultyGetController << boundary >> << @RestController >> << @RequestMapping >> {
+            + @GetMapping getById(@PathVariable id: UUID, request: HttpServletRequest): FacultyModel
+            + @GetMapping get(@RequestParam queryParams: MultiValueMap<String, String>, request: HttpServletRequest): CollectionModel<FacultyModel>
+        }
+
+        class CommonExceptionHandler << @ControllerAdvice >> {
+            @ExceptionHandler public ProblemDetail onNotFound(final NotFoundException ex, final HttpServletRequest request)
+        }
+
+        FacultyGetController o--> "1" FacultyReadService : service
+        FacultyGetController ..> FacultyModel
+
+        FacultyGetController .up.> RestController
+        FacultyGetController .up.> RequestMapping
+        FacultyGetController .up.> PathVariable
+        FacultyGetController .up.> RequestParam
+        FacultyGetController .up.> ResponseEntity
+        FacultyGetController .up.> MultiValueMap
+        FacultyGetController .up.> CollectionModel
+        FacultyGetController .right.> HttpServletRequest
+
+        CommonExceptionHandler .up.> ExceptionHandler
+        CommonExceptionHandler ..> NotFoundException
+        CommonExceptionHandler .up[hidden].> FacultyModel
+
+        FacultyGetController .right.> UUID
+
+        FacultyModel ..> FacultyReadService
+    }
+}
+
+hide empty members
+
+footer (c) Ahmad Hawarnah
+
+@enduml

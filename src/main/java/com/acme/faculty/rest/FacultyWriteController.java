@@ -1,12 +1,12 @@
 package com.acme.faculty.rest;
 
-import com.acme.faculty.service.ConstraintViolationsException;
-import com.acme.faculty.service.DeanExistsException;
+import com.acme.faculty.rest.FacultyDTO.OnCreate;
 import com.acme.faculty.service.FacultyWriteService;
-import com.acme.faculty.service.NameExistsException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.groups.Default;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,21 +27,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import static com.acme.faculty.rest.FacultyGetController.ID_PATTERN;
 import static com.acme.faculty.rest.FacultyGetController.REST_PATH;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
 
 /**
  * Controller zur Behandlung von POST- und PUT-Anfragen für Fakultäten.
+ * <img src="../../../../../../../extras/compose/doc/FacultyWriteController.svg" alt="Klassendiagramm">
  *
  * @author Ahmad Hawarnah
  */
 @Controller
 @RequestMapping(REST_PATH)
 @RequiredArgsConstructor
+@Validated
 @Slf4j
-@SuppressWarnings({"ClassFanOutComplexity", "java:S1075"})
+@SuppressWarnings({"ClassFanOutComplexity", "java:S1075", "java:S6856"})
 public class FacultyWriteController {
-    private static final String PROBLEM_PATH = "/problem/";
+    /**
+     * Der Pfad für Problemdetails.
+     */
+    public static final String PROBLEM_PATH = "/problem/";
     private final FacultyWriteService service;
     private final FacultyMapper mapper;
 
@@ -56,7 +64,8 @@ public class FacultyWriteController {
     @ApiResponse(responseCode = "201", description = "Fakultaet neu angelegt")
     @ApiResponse(responseCode = "400", description = "Syntaktische Fehler im Request-Body")
     @ApiResponse(responseCode = "422", description = "Validierungsfehler")
-    ResponseEntity<Void> post(@RequestBody final FacultyDTO facultyDTO, final HttpServletRequest request)
+    ResponseEntity<Void> post(@RequestBody @Validated({Default.class, OnCreate.class})
+                              final FacultyDTO facultyDTO, final HttpServletRequest request)
         throws URISyntaxException {
         log.info("Post Faculty: {}", facultyDTO);
         final var facultyInput = mapper.toFaculty(facultyDTO);
@@ -78,43 +87,35 @@ public class FacultyWriteController {
     @ApiResponse(responseCode = "404", description = "Fakultaet nicht vorhanden")
     @ApiResponse(responseCode = "422", description = "Ungueltige Werte, Name vorhanden oder Dekan ist vorhanden")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping(path = "{id:" + ID_PATTERN + "}", consumes = APPLICATION_JSON_VALUE)
-    void put(@PathVariable final UUID id, @RequestBody final FacultyDTO facultyDTO) {
+    @PutMapping (path = "{id:" + ID_PATTERN + "}", consumes = APPLICATION_JSON_VALUE)
+    void put(@PathVariable final UUID id, @RequestBody @Valid final FacultyDTO facultyDTO) {
         log.debug("put: id = {}, {}", id, facultyDTO);
         final var facultyInput = mapper.toFaculty(facultyDTO);
         service.update(id, facultyInput);
     }
 
+    /**
+     * Behandelt Constraint-Verletzungen.
+     *
+     * @param ex Die ausgelöste Ausnahme.
+     * @param request Das HTTP-Anfrageobjekt.
+     * @return Ein ProblemDetail-Objekt, das die Fehlerdetails enthält.
+     */
     @ExceptionHandler
     ProblemDetail onConstraintViolations(
-        final ConstraintViolationsException ex,
+        final MethodArgumentNotValidException ex,
         final HttpServletRequest request
     ) {
         log.debug("onConstraintViolations: {}", ex.getMessage());
-        final var problemDetail = ProblemDetail.forStatusAndDetail(
-            HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage()
-                .replace("creat.faculty", "")
-                .replace("update.faculty", ""));
+
+        final var detailMessages = ex.getDetailMessageArguments();
+        final var detail = detailMessages == null
+            ? "Constraint Violations"
+            : ((String) detailMessages[1]).replace(", and ", ", ");
+        final var problemDetail = ProblemDetail.forStatusAndDetail(UNPROCESSABLE_ENTITY, detail);
         problemDetail.setType(URI.create(PROBLEM_PATH + ProblemType.CONSTRAINTS.getValue()));
         problemDetail.setInstance(URI.create(request.getRequestURL().toString()));
-        return problemDetail;
-    }
 
-    @ExceptionHandler
-    ProblemDetail onNameExists(final NameExistsException ex, final HttpServletRequest request) {
-        log.debug("onNameExists: {}", ex.getMessage());
-        final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
-        problemDetail.setType(URI.create(PROBLEM_PATH + ProblemType.UNPROCESSABLE.getValue()));
-        problemDetail.setInstance(URI.create(request.getRequestURL().toString()));
-        return problemDetail;
-    }
-
-    @ExceptionHandler
-    ProblemDetail onDeanExists(final DeanExistsException ex, final HttpServletRequest request) {
-        log.debug("onDeanExists: {}", ex.getMessage());
-        final var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage());
-        problemDetail.setType(URI.create(PROBLEM_PATH + ProblemType.UNPROCESSABLE.getValue()));
-        problemDetail.setInstance(URI.create(request.getRequestURL().toString()));
         return problemDetail;
     }
 }

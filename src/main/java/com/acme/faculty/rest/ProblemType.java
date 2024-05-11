@@ -6,6 +6,8 @@ package com.acme.faculty.rest;
  * @author Ahmad Hawarnah
  */
 enum ProblemType {
+
+    NOT_FOUND("Not_Found"),
     /**
      * Constraints als Fehlerursache.
      */

@@ -1,0 +1,98 @@
+@startuml FacultyWriteController
+
+package org.springframework {
+  package stereotype {
+      interface "@Controller" as Controller
+    }
+
+  package web.bind.annotation {
+      interface "@RequestMapping" as RequestMapping
+      interface "@PathVariable" as PathVariable
+      interface "@RequestBody" as RequestBody
+      interface "@ExceptionHandler" as ExceptionHandler
+  }
+
+  package http {
+      class ResponseEntity<T>
+      class ProblemDetail
+
+      package converter {
+          class HttpMessageNotReadableException
+      }
+
+      ResponseEntity .[hidden].> ProblemDetail
+      ProblemDetail .[hidden].> HttpMessageNotReadableException
+  }
+}
+
+package jakarta.servlet.http {
+    interface HttpServletRequest
+}
+
+package java.util {
+    interface Collection<T>
+    class UUID
+
+    UUID .up[hidden].> Collection
+    Collection .up[hidden].> HttpServletRequest
+}
+
+package com.acme.faculty {
+  package service {
+    class FacultyWriteService << control >> << @Service >>
+    class NotFoundException
+    class NameExistsException
+    class DeanExistsException
+  }
+
+  package rest #DDDDDD {
+    package patch {
+        class PatchOperation <<entity>>
+        }
+
+    class FacultyDTO <<entity>>
+
+    class FacultyWriteController << boundary >> << Controller >> << @RequestMapping >> {
+        + post(facultyDTO: FacultyDTO, request: HttpServletRequest): ResponseEntity<Void>
+        + put(id: UUID, facultyDTO: FacultyDTO)
+        + @ExceptionHandler onConstraintViolations(ex: MethodArgumentNotValidException, req: HttpServletRequest): ProblemDetail
+    }
+
+    class CommonExceptionHandler << @ControllerAdvice >> {
+        + @ExceptionHandler ProblemDetail onNotFound(final NotFoundException ex, final HttpServletRequest request)
+        + @ExceptionHandler ProblemDetail onNameExists(final NameExistsException ex, final HttpServletRequest request)
+        + @ExceptionHandler ProblemDetail onDeanExists(final DeanExistsException ex, final HttpServletRequest request)
+    }
+
+    FacultyWriteController o-down-> "1" FacultyWriteService : service
+    FacultyWriteController ..> FacultyDTO
+    FacultyWriteController ..> PatchOperation
+
+    FacultyWriteController .up.> ResponseEntity
+    FacultyWriteController .up.> ProblemDetail
+    FacultyWriteController .up.> HttpMessageNotReadableException
+    FacultyWriteController .right.> HttpServletRequest
+
+    FacultyWriteController .up.> Controller
+    FacultyWriteController .up.> RequestMapping
+    FacultyWriteController .up.> PathVariable
+    FacultyWriteController .up.> RequestBody
+    FacultyWriteController .up.> ExceptionHandler
+    FacultyWriteController .right.> UUID
+    FacultyWriteController .right.> Collection
+
+    CommonExceptionHandler .up.> ExceptionHandler
+    CommonExceptionHandler ..> NotFoundException
+    CommonExceptionHandler ..> NameExistsException
+    CommonExceptionHandler ..> DeanExistsException
+    CommonExceptionHandler .up[hidden].> FacultyModel
+
+    PatchOperation .[hidden].> FacultyWriteService
+  }
+}
+
+hide empty members
+
+footer (c) Juergen Zimmermann
+
+@enduml

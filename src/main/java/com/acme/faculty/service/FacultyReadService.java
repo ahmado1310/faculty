@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Anwendungslogik für Faculty.
+ * <img src="../../../../../../../extras/compose/doc/FacultyReadService.svg" alt="Klassendiagramm">
  *
  * @author Ahmad Hawarnah
  **/

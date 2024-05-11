@@ -37,6 +37,7 @@ import static org.springframework.security.crypto.factory.PasswordEncoderFactori
  *
  * @author <a href="mailto:Juergen.Zimmermann@h-ka.de">Jürgen Zimmermann</a>
  */
+@SuppressWarnings("java:S1135")
 interface SecurityConfig {
     /**
      * Bean-Definition, um den Zugriffsschutz an der REST-Schnittstelle zu konfigurieren.

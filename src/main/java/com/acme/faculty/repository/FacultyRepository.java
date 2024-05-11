@@ -66,7 +66,6 @@ public class FacultyRepository {
                     log.debug("find: ungültiges Suchkriterium={}", entry.getKey());
                     return emptyList();
                 }
-
             }
         }
         return emptyList();
@@ -184,7 +183,6 @@ public class FacultyRepository {
             .range(0, FACULTIES.size())
             .filter(i -> Objects.equals(FACULTIES.get(i).getId(), faculty.getId()))
             .findFirst();
-
         log.trace("update: index={}", index);
 
         if (index.isEmpty()) {

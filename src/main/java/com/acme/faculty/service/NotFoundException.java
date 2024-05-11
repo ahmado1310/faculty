@@ -8,6 +8,7 @@ import lombok.Getter;
 /**
  * RuntimeException, falls keine Fakultät gefunden wurde.
  */
+@SuppressWarnings("StringTemplateMigration")
 @Getter
 public final class NotFoundException extends RuntimeException {
     /**
@@ -17,7 +18,7 @@ public final class NotFoundException extends RuntimeException {
     private final Map<String, List<String>> suchkriterien;
 
     NotFoundException(final UUID id) {
-        super("Keine Fakultaet mit der Id" + id +  "gefunden.");
+        super("Keine Fakultaet mit der Id " + id +  " gefunden.");
         this.id = id;
         suchkriterien = null;
     }

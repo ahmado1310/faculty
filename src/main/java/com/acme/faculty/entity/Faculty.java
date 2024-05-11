@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 /**
  * Repräsentiert eine Fakultät in der Bildungseinrichtung.
+ * <img src="../../../../../../../extras/compose/doc/Faculty_Dean_Course_UUID_List.svg" alt="Klassendiagramm">
  *
  * @author Ahmad Hawarnah
  */

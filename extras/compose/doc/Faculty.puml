@@ -1,0 +1,48 @@
+@startuml Faculty_Dean_Course_UUID_List
+
+skinparam classAttributeIconSize 0
+' skinparam monochrome true
+
+package java {
+    package util {
+        class UUID
+    }
+
+    package util {
+        class List<T>
+    }
+}
+
+package com.acme.faculty.entity #DDDDDD {
+    class Faculty << entity >> {
+        id : UUID
+        name : String
+        dean : Dean
+        courses : List<Course>
+    }
+
+    class Dean << entity >> {
+        id : UUID
+        name : String
+        email : String
+    }
+
+    class Course << entity >> {
+        id : UUID
+        name : String
+    }
+}
+
+hide empty members
+
+Faculty *-- "1..1"Dean : has
+Faculty *-- "0..*" Course : offers
+
+Faculty ..> UUID
+Dean ..> UUID
+Course ..> UUID
+Faculty ..> List
+
+footer (c) Jürgen Zimmermann
+
+@enduml

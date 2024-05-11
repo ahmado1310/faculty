@@ -1,0 +1,37 @@
+@startuml FacultyWriteService
+
+package java.util {
+    class UUID
+}
+
+package org.springframework.stereotype {
+    interface Service
+}
+
+package com.acme.faculty.entity {
+    class Faculty <<entity>>
+}
+
+package com.acme.faculty.repository {
+    class FacultyRepository <<control>> <<@Repository>>
+}
+
+package com.acme.faculty.service {
+    class FacultyWriteService <<control>> <<@Service>> {
+        - repository: FacultyRepository
+        + FacultyWriteService(repository: FacultyRepository)
+        + create(@NonNull faculty: Faculty): Faculty
+        + update(id: UUID, @NonNull faculty: Faculty): void
+    }
+}
+
+FacultyWriteService o--> "1" FacultyRepository : repo
+FacultyWriteService .right.> Faculty
+FacultyWriteService .up.> UUID : uses
+FacultyWriteService .up.> Service
+
+hide empty members
+
+footer (c) Ahmad Hawarnah
+
+@enduml

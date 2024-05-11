@@ -1,0 +1,38 @@
+@startuml FacultyReadService
+
+package org.springframework.stereotype {
+    interface Service
+}
+
+package java.util {
+    interface Collection<E>
+    interface Map<K,V>
+    class Optional<T>
+    class UUID
+}
+
+package com.acme.faculty.entity {
+    class Faculty <<entity>>
+}
+
+package com.acme.faculty.repository {
+    class FacultyRepository <<control>> <<@Repository>>
+}
+
+package com.acme.faculty.service {
+    class FacultyReadService <<control>> <<@Service>> {
+        - repository: FacultyRepository
+        + FacultyReadService(repository: FacultyRepository)
+        + findById(id: UUID): Faculty
+        + find(searchCriteria: Map<String, List<String>>): Collection<Faculty>
+    }
+}
+
+FacultyReadService o--> FacultyRepository : repo
+FacultyReadService .right.> Faculty
+FacultyReadService .up.> Service
+FacultyReadService .up.> UUID
+FacultyReadService .up.> Collection
+FacultyReadService .up.> Map
+
+@enduml
