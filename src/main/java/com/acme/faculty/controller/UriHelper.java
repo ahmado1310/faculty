@@ -1,11 +1,11 @@
-package com.acme.faculty.rest;
+package com.acme.faculty.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import static com.acme.faculty.rest.FacultyGetController.REST_PATH;
+import static com.acme.faculty.controller.FacultyGetController.REST_PATH;
 
 /**
  * Hilfsklasse um URIs für HATEOAS oder für URIs in ProblemDetail zu ermitteln, falls ein API-Gateway verwendet wird.

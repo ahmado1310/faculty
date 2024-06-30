@@ -1,6 +1,6 @@
-package com.acme.faculty.rest;
+package com.acme.faculty.controller;
 
-import com.acme.faculty.rest.FacultyDTO.OnCreate;
+import com.acme.faculty.controller.FacultyDTO.OnCreate;
 import com.acme.faculty.service.FacultyWriteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,8 +25,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import static com.acme.faculty.rest.FacultyGetController.ID_PATTERN;
-import static com.acme.faculty.rest.FacultyGetController.REST_PATH;
+import static com.acme.faculty.controller.FacultyGetController.ID_PATTERN;
+import static com.acme.faculty.controller.FacultyGetController.REST_PATH;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;

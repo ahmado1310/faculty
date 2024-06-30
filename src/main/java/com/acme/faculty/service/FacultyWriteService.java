@@ -3,9 +3,12 @@ package com.acme.faculty.service;
 import com.acme.faculty.entity.Faculty;
 import com.acme.faculty.repository.FacultyRepository;
 import java.util.UUID;
+
+import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.bytecode.enhance.VersionMismatchException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,7 +35,8 @@ public class FacultyWriteService {
      * @throws NameExistsException           falls ein Fakultätsname bereits existiert.
      * @throws DeanExistsException           falls ein Dekan bereits existiert.
      */
-    public @NonNull Faculty create(@NonNull final Faculty faculty) {
+    @Transactional
+    public Faculty create(final Faculty faculty) {
         log.debug("create: faculty={}", faculty);
 
         if (repository.isNameExist(faculty.getName())) {
@@ -45,7 +49,7 @@ public class FacultyWriteService {
             throw new DeanExistsException(faculty.getDean().getName());
         }
 
-        final var facultyDB = repository.creat(faculty);
+        final var facultyDB = repository.save(faculty);
         log.debug("create: faculty={}", facultyDB);
         return facultyDB;
     }
@@ -58,20 +62,26 @@ public class FacultyWriteService {
      * @throws NotFoundException             falls die Fakultät nicht gefunden wurde.
      * @throws DeanExistsException           falls ein Dekan bereits existiert.
      */
-    public void update(final UUID id, final Faculty faculty) {
-        log.debug("update: FacultyID: {}", id);
+    @Transactional
+    public Faculty update(final UUID id, final Faculty faculty, final int version) {
         log.debug("update: {}", faculty);
+        log.debug("update: id={}, version={}", id, version);
 
-        final var facultyDbOptional = repository.findById(id);
-        if (facultyDbOptional.isEmpty()) {
-            throw new NotFoundException(id);
+        var facultyDb = repository
+            .findById(id)
+            .orElseThrow(() -> new NotFoundException(id));
+        log.trace("update: faculty={}", facultyDb);
+
+        if (version != facultyDb.getVersion()) {
+            throw  new VersionOutdatedException(version);
         }
 
         if (repository.isDeanExist(faculty.getDean().getName())) {
             throw new DeanExistsException(faculty.getDean().getName());
         }
 
-        faculty.setId(id);
-        repository.update(faculty);
+        facultyDb.setId(id);
+        facultyDb = repository.save(facultyDb);
+        return facultyDb;
     }
 }

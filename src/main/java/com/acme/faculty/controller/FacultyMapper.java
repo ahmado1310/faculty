@@ -1,4 +1,4 @@
-package com.acme.faculty.rest;
+package com.acme.faculty.controller;
 
 import com.acme.faculty.entity.Course;
 import com.acme.faculty.entity.Dean;

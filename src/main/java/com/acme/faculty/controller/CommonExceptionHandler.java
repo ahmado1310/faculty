@@ -1,4 +1,4 @@
-package com.acme.faculty.rest;
+package com.acme.faculty.controller;
 
 import com.acme.faculty.service.DeanExistsException;
 import com.acme.faculty.service.NameExistsException;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import static com.acme.faculty.rest.FacultyWriteController.PROBLEM_PATH;
+import static com.acme.faculty.controller.FacultyWriteController.PROBLEM_PATH;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 /**

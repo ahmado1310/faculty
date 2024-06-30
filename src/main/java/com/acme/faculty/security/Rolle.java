@@ -16,8 +16,12 @@
  */
 package com.acme.faculty.security;
 
+import java.util.stream.Stream;
+
 /**
- * String-Konstante für Rollen.
+ * Singleton für verfügbare Rollen als Strings für das Spring-Interface GrantedAuthority.
+ *
+ * @author <a href="mailto:Juergen.Zimmermann@h-ka.de">Jürgen Zimmermann</a>
  */
 public enum Rolle {
     /**
@@ -26,12 +30,20 @@ public enum Rolle {
     ADMIN,
 
     /**
-     * Die Rolle KUNDE.
+     * Die Rolle USER.
      */
-    KUNDE,
+    USER;
 
     /**
-     * Die Rolle ACTUATOR.
+     * Zu einem String die Rolle als Enum ermitteln.
+     *
+     * @param str String einer Rolle
+     * @return Rolle als Enum oder null
      */
-    ACTUATOR
+    public static Rolle of(final String str) {
+        return Stream.of(values())
+            .filter(rolle -> rolle.name().equalsIgnoreCase(str))
+            .findFirst()
+            .orElse(null);
+    }
 }

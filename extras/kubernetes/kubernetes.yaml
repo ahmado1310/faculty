@@ -143,8 +143,8 @@ spec:
           # https://kubernetes.github.io/ingress-nginx/user-guide/ingress-path-matching
           # https://kubernetes.io/docs/concepts/services-networking/ingress
           # (.*) wird abgebildet auf $2 (d.h. 2. Pfad-Segment s.o.), z.B.
-          #   kubernetes.docker.internal/kunden wird zu kubernetes.docker.internal:8080/rest
-          #   kubernetes.docker.internal/kunden/123 wird zu kubernetes.docker.internal:8080/rest/123
+          #   kubernetes.docker.internal/kunden wird zu kubernetes.docker.internal:8080/controller
+          #   kubernetes.docker.internal/kunden/123 wird zu kubernetes.docker.internal:8080/controller/123
           # https://github.com/kubernetes/ingress-nginx/issues/10200#issuecomment-1673141202
           - path: /faculties(/|$)(.*)
             #pathType: Prefix

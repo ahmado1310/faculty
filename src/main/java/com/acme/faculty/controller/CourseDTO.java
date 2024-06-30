@@ -1,4 +1,4 @@
-package com.acme.faculty.rest;
+package com.acme.faculty.controller;
 
 import jakarta.validation.constraints.NotBlank;
 

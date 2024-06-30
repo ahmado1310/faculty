@@ -21,13 +21,13 @@ import org.springframework.context.annotation.Profile;
 import static com.acme.faculty.dev.DevConfig.DEV;
 
 /**
- * Konfigurationsklasse für die Anwendung bzw. den Microservice, falls das Profile _dev_ aktiviert ist.
+ * Konfigurationsklasse für die Anwendung bzw. den Microservice, falls das Profile dev aktiviert ist.
  *
  * @author <a href="mailto:Juergen.Zimmermann@h-ka.de">Jürgen Zimmermann</a>
  */
 @Profile(DEV)
 @SuppressWarnings({"ClassNamePrefixedWithPackageName", "HideUtilityClassConstructor"})
-public class DevConfig implements LogRequestHeaders, K8s {
+public class DevConfig implements Flyway, com.acme.faculty.dev.LogRequestHeaders, com.acme.faculty.dev.LogSignatureAlgorithms, com.acme.faculty.dev.K8s {
     /**
      * Konstante für das Spring-Profile "dev".
      */
